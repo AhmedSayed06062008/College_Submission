@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Krishi-Setu — Mandi Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F1EEE3;--card:#fff;--ink:#1B2620;--soft:#5B6A60;--line:#E2DDCC;--leaf:#1F7A47;--wheat:#C48A1E;--red:#B3382C;--tint:#E9F6EE;--warn:#FBF0D9;--soil:#1B3B2E;--redbg:#FBE9E6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1B15;--card:#172A21;--ink:#E7EFE9;--soft:#9DB0A4;--line:#2A4035;--leaf:#5CD08F;--wheat:#E4A937;--red:#F08A7E;--tint:#1D3A2C;--warn:#3A2F14;--soil:#0A1510;--redbg:#3B1E1A}}
+:root[data-theme="dark"]{--bg:#0F1B15;--card:#172A21;--ink:#E7EFE9;--soft:#9DB0A4;--line:#2A4035;--leaf:#5CD08F;--wheat:#E4A937;--red:#F08A7E;--tint:#1D3A2C;--warn:#3A2F14;--soil:#0A1510;--redbg:#3B1E1A}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 "Noto Sans","Noto Sans Devanagari",sans-serif;display:flex;min-height:100vh}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--wheat);outline-offset:2px}
+.side{width:236px;background:var(--soil);color:#fff;padding:24px 14px;display:flex;flex-direction:column;gap:6px;flex-shrink:0;position:sticky;top:0;height:100vh}
+.brand{font-weight:800;font-size:18px;padding:0 10px}.brand small{display:block;font-weight:500;font-size:12px;color:#B9CFC1;margin-top:2px}
+.nav{margin-top:22px;display:flex;flex-direction:column;gap:4px}
+.nav button{all:unset;display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:10px;color:#CFE0D5;font-weight:600;cursor:pointer}
+.nav button:hover{background:rgba(255,255,255,.07)}
+.nav button[aria-selected=true]{background:#E4A937;color:#1B2620;font-weight:800}
+.badge{background:#E4A937;color:#1B2620;border-radius:100px;font-size:11px;font-weight:800;padding:1px 8px}
+.nav button[aria-selected=true] .badge{background:#1B3B2E;color:#fff}
+.side .who{margin-top:auto;font-size:12px;color:#B9CFC1;padding:0 10px}
+main{flex:1;min-width:0;padding:28px clamp(16px,3vw,40px) 48px;max-width:1040px}
+h1{font-size:22px;font-weight:800;margin:0}.lead{color:var(--soft);margin:2px 0 22px;max-width:60ch}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px}
+.row{padding:16px 18px;border-bottom:1px solid var(--line)}.row:last-child{border:0}
+.sum{display:flex;gap:28px;flex-wrap:wrap;padding:16px 18px;margin-bottom:14px}
+.sum b{font-size:22px;font-weight:800;display:block;line-height:1.2}.sum span{font-size:12px;color:var(--soft)}
+.crop{display:grid;grid-template-columns:130px 1fr 150px;gap:6px 18px;align-items:center}
+.crop .n{font-weight:700}.crop .n i{font-style:normal;color:var(--soft);font-weight:400;margin-left:6px}
+.gauge{position:relative;height:34px;border-radius:9px;background:var(--line);overflow:hidden}
+.gauge .fill{position:absolute;inset:0 auto 0 0;background:var(--leaf);opacity:.85;transition:width .2s}
+.gauge .fill.over{background:var(--red)}
+.gauge input{position:absolute;inset:0;width:100%;height:100%;margin:0;background:none;appearance:none;-webkit-appearance:none;cursor:ew-resize}
+.gauge input::-webkit-slider-thumb{-webkit-appearance:none;width:8px;height:34px;background:var(--wheat);border-radius:3px;box-shadow:0 0 0 2px var(--card)}
+.gauge input::-moz-range-thumb{width:8px;height:34px;border:0;background:var(--wheat);border-radius:3px}
+.lim{display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.lim input{width:78px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;font-weight:700;text-align:right}
+.lim span{color:var(--soft);font-size:12px}
+.note{grid-column:2/4;font-size:12px;color:var(--soft)}.note.bad{color:var(--red);font-weight:600}
+.legend{font-size:12px;color:var(--soft);padding:12px 18px}
+.ctl{display:flex;gap:22px;flex-wrap:wrap;align-items:center;padding:14px 18px;margin-bottom:14px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{all:unset;padding:7px 14px;font-weight:600;cursor:pointer;color:var(--soft)}
+.seg button[aria-pressed=true]{background:var(--soil);color:#fff}
+.step{display:inline-flex;align-items:center;gap:10px}
+.step button{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:800}
+.ctl label{font-weight:600;margin-right:10px}
+.slot{display:grid;grid-template-columns:170px 1fr 84px 96px;gap:14px;align-items:center}
+.slot .t{font-weight:700}
+.bar{height:10px;border-radius:100px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;background:var(--leaf)}
+.bar i.hi{background:var(--wheat)}.bar i.full{background:var(--red)}
+.slot .c{font-size:12px;color:var(--soft);text-align:right}
+.slot.blocked{background:repeating-linear-gradient(135deg,transparent 0 8px,var(--line) 8px 9px)}
+.slot.blocked .t{color:var(--soft);text-decoration:line-through}
+.tog{padding:7px 0;border-radius:9px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;font-size:13px}
+.tog.on{border-color:var(--red);color:var(--red)}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.flag{display:grid;grid-template-columns:1fr auto;gap:10px 20px}
+.flag h3{margin:0;font-size:15px}.flag .m{color:var(--soft);font-size:12.5px}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:100px;margin-right:8px;vertical-align:1px}
+.tag.ov{background:var(--warn);color:var(--wheat)}.tag.dn{background:var(--redbg);color:var(--red)}.tag.ok{background:var(--tint);color:var(--leaf)}
+.why{grid-column:1/-1;background:var(--bg);border-radius:9px;padding:9px 12px;font-size:13px}
+.acts{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap}
+.acts input{flex:1;min-width:180px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink);font:inherit}
+.b{padding:9px 16px;border-radius:10px;font-weight:800;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.b.p{background:var(--leaf);border-color:var(--leaf);color:#fff}
+:root[data-theme="dark"] .b.p{color:#0F1B15}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .b.p{color:#0F1B15}}
+.empty{padding:36px 18px;text-align:center;color:var(--soft)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--soil);color:#fff;padding:11px 18px;border-radius:11px;font-weight:600;opacity:0;pointer-events:none;transition:.2s;z-index:9;max-width:90vw}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+[hidden]{display:none!important}
+@media(max-width:860px){
+ body{flex-direction:column}
+ .side{width:100%;height:auto;position:static;flex-direction:row;align-items:center;padding:12px 14px;gap:14px;flex-wrap:wrap}
+ .nav{margin:0;flex-direction:row;overflow-x:auto}.nav button{white-space:nowrap}.side .who{display:none}
+ .crop,.slot{grid-template-columns:1fr 1fr}.crop .gauge,.slot .bar{grid-column:1/-1;order:3}.note{grid-column:1/-1}.slot .c{text-align:left}
+ .flag{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<aside class="side">
+  <div class="brand">Krishi-Setu<small>APMC Mandi Yard 2</small></div>
+  <nav class="nav" role="tablist">
+    <button role="tab" data-v="cap" aria-selected="true">Crop limits</button>
+    <button role="tab" data-v="slots" aria-selected="false">Time slots</button>
+    <button role="tab" data-v="flags" aria-selected="false">Gate flags <span class="badge" id="bd">0</span></button>
+  </nav>
+  <div class="who">Mandi manager<br>Gate officer on duty: S. Patil</div>
+</aside>
+
+<main>
+  <section id="cap">
+    <h1>Daily crop limits</h1>
+    <p class="lead">Set how many quintals of each crop the yard can take today. Farmers cannot book a crop once its limit is reached.</p>
+    <div class="card sum" id="capSum"></div>
+    <div class="card" id="crops"></div>
+    <p class="legend">Drag the gold marker or type a number. Green shows quintals already booked.</p>
+  </section>
+
+  <section id="slots" hidden>
+    <h1>Time slots</h1>
+    <p class="lead">Change how long each slot is, set how many vehicles fit per hour, or block hours for lunch, rain or a breakdown.</p>
+    <div class="card ctl">
+      <div><label>Slot length</label><span class="seg" id="ivl"></span></div>
+      <div><label>Vehicles per hour</label><span class="step"><button data-d="-1" aria-label="Fewer vehicles">−</button><b id="vph"></b><button data-d="1" aria-label="More vehicles">+</button></span></div>
+    </div>
+    <div class="card" id="slotList"></div>
+  </section>
+
+  <section id="flags" hidden>
+    <h1>Gate flags</h1>
+    <p class="lead">Entries the Gate Officer overrode or denied. Approve to accept the entry, or reject to record it as a violation.</p>
+    <div class="tabs seg" style="align-self:flex-start;margin-bottom:14px" id="ftabs"></div>
+    <div class="card" id="flagList"></div>
+  </section>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const crops=[
+ {id:'wheat',en:'Wheat',hi:'गेहूं',limit:800,booked:512,max:1200},
+ {id:'paddy',en:'Paddy',hi:'धान',limit:1000,booked:640,max:1500},
+ {id:'mustard',en:'Mustard',hi:'सरसों',limit:400,booked:368,max:800},
+ {id:'maize',en:'Maize',hi:'मक्का',limit:600,booked:210,max:1000}];
+const hourLoad={8:.6,9:.8,10:.9,11:1,12:.5,13:.4,14:1,15:.9,16:.5,17:.3};
+const S={ivl:2,vph:10,blocked:new Set(),tab:'open'};
+const flags=[
+ {id:1,kind:'ov',pass:'GP-KA5521-0908',who:'Anita Waghmare',fid:'KA-5521',crop:'Mustard',qty:20,veh:'Mini Truck',slot:'02:00 PM – 04:00 PM',at:'10:12 AM',why:'Overridden · arrived early for slot'},
+ {id:2,kind:'ov',pass:'GP-KA7765-0908',who:'Santosh Bhosale',fid:'KA-7765',crop:'Wheat',qty:33,veh:'Cart',slot:'08:00 AM – 10:00 AM',at:'10:41 AM',why:'Overridden · yard had spare capacity'},
+ {id:3,kind:'dn',pass:'GP-KA8831-0908',who:'Ramesh Kumar',fid:'KA-8831',crop:'Wheat',qty:50,veh:'Tractor-Trolley',slot:'10:00 AM – 12:00 PM',at:'10:58 AM',why:'Denied · pass already used, first scanned at 09:52 AM'},
+ {id:4,kind:'dn',pass:'GP-KA6620-0908',who:'Vitthal Jadhav',fid:'KA-6620',crop:'Paddy',qty:65,veh:'Mini Truck',slot:'08:00 AM – 10:00 AM',at:'11:05 AM',why:'Denied · pass already used, first scanned at 09:18 AM'},
+ {id:5,kind:'dn',pass:'Unknown',who:'Unidentified vehicle',crop:'—',at:'11:20 AM',why:'Denied · QR not recognised as a Krishi-Setu pass'},
+ {id:6,kind:'dn',pass:'Unreadable',who:'Unidentified vehicle',crop:'—',at:'11:34 AM',why:'Denied · QR blurred or unreadable'}];
+const fmt=h=>{const a=h>=12?'PM':'AM';return String(((h+11)%12)+1).padStart(2,'0')+':00 '+a};
+let tt;const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2600)};
+
+/* ---- views ---- */
+$$('.nav button').forEach(b=>b.onclick=()=>{$$('.nav button').forEach(x=>x.setAttribute('aria-selected',x===b));
+ ['cap','slots','flags'].forEach(v=>$('#'+v).hidden=v!==b.dataset.v)});
+
+/* ---- crop limits ---- */
+function paintGauge(c,el){el.style.background=`linear-gradient(to right,var(--tint) ${c.limit/c.max*100}%,var(--line) 0)`;
+ const f=el.querySelector('.fill');f.style.width=Math.min(c.booked/c.max*100,100)+'%';f.classList.toggle('over',c.booked>c.limit)}
+function renderCrops(){
+ $('#crops').innerHTML=crops.map(c=>`<div class="row crop" data-id="${c.id}">
+  <div class="n">${c.en}<i>${c.hi}</i></div>
+  <div class="gauge"><div class="fill"></div><input type="range" min="0" max="${c.max}" step="10" value="${c.limit}" aria-label="${c.en} daily limit"></div>
+  <div class="lim"><input type="number" min="0" max="${c.max}" step="10" value="${c.limit}" aria-label="${c.en} limit in quintals"><span>quintals</span></div>
+  <div class="note"></div></div>`).join('');
+ $$('.crop').forEach(r=>{const c=crops.find(x=>x.id===r.dataset.id),g=r.querySelector('.gauge'),rg=g.querySelector('input'),nm=r.querySelector('.lim input');
+  const upd=v=>{c.limit=Math.max(0,Math.min(c.max,+v||0));rg.value=nm.value=c.limit;paintGauge(c,g);note(r,c);sum()};
+  rg.oninput=()=>upd(rg.value);nm.oninput=()=>upd(nm.value);
+  rg.onchange=nm.onchange=()=>toast(`${c.en} limit set to ${c.limit} quintals`);
+  paintGauge(c,g);note(r,c)});
+ sum()}
+function note(r,c){const n=r.querySelector('.note'),left=c.limit-c.booked;
+ n.className='note'+(left<0?' bad':'');
+ n.textContent=left<0?`Limit is ${-left} q below what is already booked. No new bookings will be accepted.`:`${c.booked} q booked · ${left} q still open`}
+function sum(){const L=crops.reduce((a,c)=>a+c.limit,0),B=crops.reduce((a,c)=>a+c.booked,0);
+ $('#capSum').innerHTML=`<div><b>${L}</b><span>quintals allowed today</span></div><div><b>${B}</b><span>quintals booked</span></div><div><b>${Math.max(L-B,0)}</b><span>quintals still open</span></div><div><b>${crops.filter(c=>c.booked>=c.limit).length}</b><span>crops at limit</span></div>`}
+
+/* ---- slots ---- */
+function slots(){const a=[];for(let h=8;h<18;h+=S.ivl){const hrs=[];for(let i=h;i<Math.min(h+S.ivl,18);i++)hrs.push(i);a.push(hrs)}return a}
+function renderSlots(){
+ $('#ivl').innerHTML=[1,2,3].map(n=>`<button aria-pressed="${n===S.ivl}" data-n="${n}">${n} hour${n>1?'s':''}</button>`).join('');
+ $('#vph').textContent=S.vph;
+ $('#slotList').innerHTML=slots().map(hrs=>{
+  const cap=hrs.length*S.vph,bk=Math.min(cap,hrs.reduce((a,h)=>a+Math.round(hourLoad[h]*10),0)),pct=bk/cap*100,off=hrs.every(h=>S.blocked.has(h));
+  return `<div class="row slot${off?' blocked':''}"><div class="t">${fmt(hrs[0])} – ${fmt(hrs[hrs.length-1]+1)}</div>
+  <div class="bar"><i class="${pct>=100?'full':pct>=80?'hi':''}" style="width:${pct}%"></i></div>
+  <div class="c">${bk} / ${cap} vehicles</div>
+  <button class="tog${off?'':' on'}" data-h="${hrs.join(',')}" data-bk="${bk}">${off?'Reopen':'Block'}</button></div>`}).join('')}
+$('#ivl').onclick=e=>{const n=e.target.dataset.n;if(n){S.ivl=+n;renderSlots();toast(`Slots are now ${n} hour${n>1?'s':''} long`)}};
+document.querySelector('.step').onclick=e=>{const d=+e.target.dataset.d;if(d){S.vph=Math.max(2,Math.min(30,S.vph+d));renderSlots()}};
+$('#slotList').onclick=e=>{const b=e.target.closest('.tog');if(!b)return;const hs=b.dataset.h.split(',').map(Number),off=hs.every(h=>S.blocked.has(h));
+ hs.forEach(h=>off?S.blocked.delete(h):S.blocked.add(h));renderSlots();
+ toast(off?'Slot reopened for booking':`Slot blocked${+b.dataset.bk?` · ${b.dataset.bk} booked vehicles need to be notified`:''}`)};
+
+/* ---- flags ---- */
+function renderFlags(){
+ const open=flags.filter(f=>!f.res),done=flags.filter(f=>f.res);
+ $('#bd').textContent=open.length;$('#bd').hidden=!open.length;
+ $('#ftabs').innerHTML=`<button aria-pressed="${S.tab==='open'}" data-t="open">Needs review (${open.length})</button><button aria-pressed="${S.tab==='done'}" data-t="done">Resolved (${done.length})</button>`;
+ const list=S.tab==='open'?open:done;
+ $('#flagList').innerHTML=list.length?list.map(f=>`<div class="row flag" data-id="${f.id}">
+  <div><h3><span class="tag ${f.res?'ok':f.kind}">${f.res?(f.res==='a'?'Approved':'Rejected'):f.kind==='ov'?'Overridden':'Denied'}</span>${f.who}</h3>
+  <div class="m">${f.pass}${f.fid?' · '+f.fid:''}${f.qty?` · ${f.crop} ${f.qty} q · ${f.veh}`:''}</div>
+  ${f.slot?`<div class="m">Booked slot ${f.slot}</div>`:''}</div>
+  <div class="m">Scanned ${f.at}</div>
+  <div class="why">${f.why}${f.note?`<br><b>Your note:</b> ${f.note}`:''}</div>
+  ${f.res?'':`<div class="acts"><input placeholder="Add a note (optional)" aria-label="Resolution note"><button class="b" data-a="r">Reject</button><button class="b p" data-a="a">Approve</button></div>`}</div>`).join('')
+  :`<div class="empty">${S.tab==='open'?'All flags are resolved. New ones from the gate will appear here.':'Nothing resolved yet.'}</div>`}
+$('#ftabs').onclick=e=>{if(e.target.dataset.t){S.tab=e.target.dataset.t;renderFlags()}};
+$('#flagList').onclick=e=>{const a=e.target.dataset.a;if(!a)return;const r=e.target.closest('.flag'),f=flags.find(x=>x.id==r.dataset.id);
+ f.res=a;f.note=r.querySelector('input').value.trim();renderFlags();toast(a==='a'?'Flag cleared. Entry approved':'Flag closed. Recorded as a violation')};
+
+renderCrops();renderSlots();renderFlags();
+</script>
+</body>
+</html>
